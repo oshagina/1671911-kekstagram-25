@@ -6,7 +6,7 @@ const getRandomIntInclusive=(min, max)=>{
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min; //Максимум и минимум включаются
   }
-  console.log('Проверьте min и max');
+  return false;
 };
 //Функция для проверки максимальной длины строки
 
