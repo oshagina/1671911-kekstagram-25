@@ -1,7 +1,7 @@
 //Функция, возвращающая случайное целое число из переданного диапазона включительно
 //из MDN WEB DOCS
-const getRandomIntInclusive=(min, max)=>{
-  if(max>min||(max-min)>=0){
+const getRandomIntInclusive = (min, max) => {
+  if(max > min){
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min; //Максимум и минимум включаются
@@ -9,12 +9,7 @@ const getRandomIntInclusive=(min, max)=>{
   return false;
 };
 //Функция для проверки максимальной длины строки
-
-const controlMaxLength=(frase,STRING_MAXLENGTH)=>{
-  if(frase.length<STRING_MAXLENGTH){
-    return true;
-  } return false;
-};
+const compareMaxLengthWithValue = (phrase, value) => phrase.length <= value;
 
 getRandomIntInclusive(0,10);
-controlMaxLength('Hello',140);
+compareMaxLengthWithValue('Hello', 140);
