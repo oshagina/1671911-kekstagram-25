@@ -9,7 +9,7 @@ const getRandomIntInclusive = (min, max) => {
   return false;
 };
 //Функция для проверки максимальной длины строки
-const compareMaxLengthWithValue = (phrase, value) => phrase.length <= value;
+const compareMaxLengthWithValue = (string, value) => string.length <= value;
 
 getRandomIntInclusive(0,10);
 compareMaxLengthWithValue('Hello', 140);
