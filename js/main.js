@@ -1,4 +1,4 @@
-const SIMILAR_DESCRIPTION_COUNT=25;
+const SIMILAR_DESCRIPTION_COUNT=5;
 const NAMES=[
   'Ольга',
   'Илья',
