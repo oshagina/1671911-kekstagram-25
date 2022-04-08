@@ -10,7 +10,7 @@ import {
   removeChild
 } from './utils.js';
 
-const picturesContainerElement = document.querySelector('.pictures.container');
+//const picturesContainerElement = document.querySelector('.pictures.container');
 const bigPicturesOverlayElement = document.querySelector('.big-picture.overlay');
 const bigPicturePreviewElement = document.querySelector('.big-picture__preview');
 const bigPictureImgElement = bigPicturePreviewElement.querySelector('.big-picture__img');
