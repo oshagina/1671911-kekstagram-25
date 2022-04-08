@@ -1,5 +1,4 @@
-import {getRandomArrayElement} from'./utils.js';
-import {getRandomPositiveInteger} from'./utils1.js';
+import {getRandomArrayElement, getRandomPositiveInteger} from'./utils.js';
 
 const SIMILAR_DESCRIPTION_COUNT=25;
 const NAMES=[
@@ -28,6 +27,20 @@ const DESCRIPTIONS=[
   'С друзьями',
   'Тихая природа',
 ];
+const HashTagData = {
+  OCTOTHORPE: '#',
+  MIN_HASHTAG_SIZE: 2,
+  MAX_HASHTAG_SIZE: 20,
+  HASHTAGS_AMOUNT: 5,
+};
+const COMMENT_SIZE = 140;
+const STEP_ADD_COMMENT = 5;
+const START_COMMENTS_NUM = 0;
+const ESC_KEYCODE = 27;
+const ENTER_KEYCODE = 13;
+const CLOSE_MESSAGE = 'Пожалуйста, закройте';
+const hashTagRegExp = /[A-Za-zА-Яа-яЁё0-9]/;
+
 
 const createDescriptionPhoto = () => ({
   id: getRandomPositiveInteger(1, 25),
@@ -41,8 +54,18 @@ const createDescriptionPhoto = () => ({
     name: getRandomArrayElement(NAMES),
   },
 });
-
 //функция для создания массива из 25 сгенерированных объектов. Каждый объект массива — описание фотографии, опубликованной пользователем.
 const similarDescriptionPhotos=()=>Array.from({length: SIMILAR_DESCRIPTION_COUNT}, createDescriptionPhoto);
 
-export {similarDescriptionPhotos};
+export {
+  similarDescriptionPhotos,
+  HashTagData,
+  CLOSE_MESSAGE,
+  ESC_KEYCODE,
+  ENTER_KEYCODE,
+  COMMENT_SIZE,
+  hashTagRegExp,
+  STEP_ADD_COMMENT,
+  START_COMMENTS_NUM
+};
+
