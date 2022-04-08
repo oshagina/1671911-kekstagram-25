@@ -71,7 +71,7 @@ const getCommentsList = (bigPictureData) => {
 
 
 const getBigPhoto = (loadedPhotos) => {
-  console.log(loadedPhotos);
+// console.log(loadedPhotos);
   const showPhotos = (evt) => {
     evt.preventDefault();
     //  const bigPictureData = (id) => loadedPhotos.find((picture) => String(picture.id) === id);
@@ -81,11 +81,11 @@ const getBigPhoto = (loadedPhotos) => {
     // getCommentsList(bigPictureData(evt.target.dataset.id));
   };
 
-  const onClickPictureOpen = (evt) => {
-    if (evt.target.closest('.picture__img')) {
-      showPhotos(evt);
-    }
-  };
+  //const onClickPictureOpen = (evt) => {
+  if (evt.target.closest('.picture__img')) {
+    showPhotos(evt);
+  }
+  //};
 
   const onKeydownPictureOpen = (evt) => {
     if (evt.keyCode === ENTER_KEYCODE && evt.target.classList.contains('picture')) {
