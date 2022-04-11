@@ -21,7 +21,7 @@ const getData =(similarPhotos) => {
     );
     similarListFragment.appendChild(pictureElement);
   });
-
+  //
   listPhotos.appendChild(similarListFragment);
   document.body.appendChild(listPhotos);
 };
