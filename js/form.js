@@ -5,8 +5,10 @@ import {
   closeElement,
   compareMaxLengthText,
 } from './utils.js';
+
 import {
-  COMMENT_SIZE, HashTagData,
+  COMMENT_SIZE,
+  HashTagData,
   hashTagRegExp
 } from './data.js';
 
@@ -36,7 +38,7 @@ const isValidHashTagForm = () => {
       check: (inputHashTag) => inputHashTag.some((value) => value.length <= HashTagData.MIN_HASHTAG_SIZE),
     },
     {
-      errorInfo: 'Хэш-тег после решётки должен состоять только из букв и чисел и ничего другого',
+      errorInfo: 'После решётки должны быть только буквы и числа',
       check: (inputHashTag) => inputHashTag.some((value) => value[value.length - 1].match(hashTagRegExp) === null),
     },
     {
@@ -45,11 +47,11 @@ const isValidHashTagForm = () => {
     },
     {
       check: (inputHashTag) => inputHashTag.some((value, index, arr) => arr.indexOff(value) !== index),
-      errorInfo: 'Один и тот же хэш-тег не может быть использован дважды',
+      errorInfo: 'Не используйте один и тот же хэш-тег',
     },
     {
       check: (inputHashTag) => inputHashTag.length > HashTagData.HASHTAGS_AMOUNT,
-      errorInfo: `Максимальное допустимое кол-во хэш-тегов ${HashTagData.HASHTAGS_AMOUNT}`,
+      errorInfo: `Максимальное кол-во хэш-тегов ${HashTagData.HASHTAGS_AMOUNT}`,
     },
   ];
 
