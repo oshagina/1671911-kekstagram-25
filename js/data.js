@@ -35,6 +35,9 @@ const HashTagData = {
 };
 const COMMENT_SIZE = 140;
 const STEP_ADD_COMMENT = 5;
+const START_COMMENTS_NUM = 0;
+const ESC_KEYCODE = 27;
+const ENTER_KEYCODE = 13;
 
 const createDescriptionPhoto = () => ({
   id: getRandomPositiveInteger(1, 25),
@@ -51,9 +54,14 @@ const createDescriptionPhoto = () => ({
 //функция для создания массива из 25 сгенерированных объектов. Каждый объект массива — описание фотографии, опубликованной пользователем.
 const similarDescriptionPhotos=()=>Array.from({length: SIMILAR_DESCRIPTION_COUNT}, createDescriptionPhoto);
 
+const hashTagRegExp = /[a-zA-Zа-яА-ЯёЁ0-9]/;
 export {
   similarDescriptionPhotos,
   HashTagData,
   COMMENT_SIZE,
   STEP_ADD_COMMENT,
+  START_COMMENTS_NUM,
+  ESC_KEYCODE,
+  ENTER_KEYCODE,
+  hashTagRegExp
 };

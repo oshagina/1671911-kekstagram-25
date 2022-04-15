@@ -71,9 +71,7 @@ const getCommentsList = (bigPictureData) => {
   }
 };
 
-
 const getBigPhoto = (loadedPhotos) => {
-// console.log(loadedPhotos);
   const showPhotos = (evt) => {
     evt.preventDefault();
     const bigPictureData = (id) => loadedPhotos.find((picture) => String(picture.id) === id);
