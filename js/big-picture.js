@@ -10,7 +10,7 @@ import {
   removeChild
 } from './utils.js';
 
-//const picturesContainerElement = document.querySelector('.pictures.container');
+const picturesContainerElement = document.querySelector('.pictures.container');
 const bigPicturesOverlayElement = document.querySelector('.big-picture.overlay');
 const bigPicturePreviewElement = document.querySelector('.big-picture__preview');
 const bigPictureImgElement = bigPicturePreviewElement.querySelector('.big-picture__img');
@@ -19,7 +19,7 @@ const bigPictureCommentsList = bigPicturePreviewElement.querySelector('.social__
 const bigPictureCommentElement = bigPicturePreviewElement.querySelector('social__comment');
 const socialCommentCounterElement = bigPicturePreviewElement.querySelector('.social__comment-count');
 const socialCommentsLoaderElement = bigPicturePreviewElement.querySelector('.social__comments-loader');
-const bigPictureLikesContanerElement = bigPicturePreviewElement.querySelector('.likes-count');
+const bigPictureLikesContainerElement = bigPicturePreviewElement.querySelector('.likes-count');
 const bigPictureCountContainerElement = bigPicturePreviewElement.querySelector('.comments-count');
 const bigPictureCaptonContainerElement = bigPicturePreviewElement.querySelector('.social__caption');
 
@@ -29,6 +29,8 @@ const pictureCommonData = (bigPictureData) => {
   bigPictureData.forEach((comment) =>{
     const oneCommentElement = bigPictureCommentElement.cloneNode(true);
     oneCommentElement.querySelector('.social__text').textContent = comment.message;
+    const userName = `${comment.name  }: `;
+    oneCommentElement.querySelector('.social__text').insertAdjacentText('afterbebin', userName);
     oneCommentElement.querySelector('.social__picture').src = comment.avatar;
     bigPictureCommentsList.appendChild(oneCommentElement);
   });
@@ -37,7 +39,7 @@ const pictureCommonData = (bigPictureData) => {
 
 const getPost = (somePost) => {
   bigPictureImgElement.src = somePost.url;
-  bigPictureLikesContanerElement.textContent =somePost.likesCount;
+  bigPictureLikesContainerElement.textContent =somePost.likesCount;
   bigPictureCountContainerElement.textContent = somePost.comments.length;
   bigPictureCaptonContainerElement.textContent = somePost.description;
 };
@@ -51,7 +53,7 @@ const getCommentsList = (bigPictureData) => {
       showElement(socialCommentCounterElement);
     }
 
-    const commentsBlock = bigPictureData.comments.slice();
+    const commentsBlock = bigPictureData.comments.splice();
     pictureCommonData(commentsBlock.splice(START_COMMENTS_NUM, STEP_ADD_COMMENT));
 
     const onClickCommentsOpening = () => {
@@ -74,18 +76,18 @@ const getBigPhoto = (loadedPhotos) => {
 // console.log(loadedPhotos);
   const showPhotos = (evt) => {
     evt.preventDefault();
-    //  const bigPictureData = (id) => loadedPhotos.find((picture) => String(picture.id) === id);
-    // getPost(bigPictureData(evt.target.dataset.id));
+    const bigPictureData = (id) => loadedPhotos.find((picture) => String(picture.id) === id);
+    getPost(bigPictureData(evt.target.dataset.id));
     removeChild(bigPictureCommentsList);
     showElement(bigPicturePreviewElement);
-    // getCommentsList(bigPictureData(evt.target.dataset.id));
+    getCommentsList(bigPictureData(evt.target.dataset.id));
   };
 
-  //const onClickPictureOpen = (evt) => {
-  if (evt.target.closest('.picture__img')) {
-    showPhotos(evt);
-  }
-  //};
+  const onClickPictureOpen = (evt) => {
+    if (evt.target.closest('.picture__img')) {
+      showPhotos(evt);
+    }
+  };
 
   const onKeydownPictureOpen = (evt) => {
     if (evt.keyCode === ENTER_KEYCODE && evt.target.classList.contains('picture')) {
@@ -107,8 +109,8 @@ const getBigPhoto = (loadedPhotos) => {
   showElement(bigPicturesOverlayElement);
   showElement(bigPicturePreviewElement);
 
-  //picturesContainerElement.addEventListener('click', onClickPictureOpen, true);
-  //picturesContainerElement.addEventListener('keydown', onKeydownPictureOpen);
+  picturesContainerElement.addEventListener('click', onClickPictureOpen, true);
+  picturesContainerElement.addEventListener('keydown', onKeydownPictureOpen);
   closeButtonBigPictureElement.addEventListener('click', onClickPictureClose);
   document.addEventListener('keydown', onEscPictureClose);
 };
