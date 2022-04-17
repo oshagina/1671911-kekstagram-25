@@ -25,7 +25,6 @@ const getData =(similarPhotos) => {
   listPhotos.appendChild(similarListFragment);
   document.body.appendChild(listPhotos);
 };
-
 export {
   getData
 };
