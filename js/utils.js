@@ -15,10 +15,25 @@ const showElement = (element) => element.classList.remove('hidden');
 const closeElement = (element) => element.classList.add('hidden');
 const addOverlay = (element) => element.classList.add('modal-open');
 const removeOverlay = (element) => element.classList.remove('modal-open');
+
 const removeChild = (parent) => {
   while (parent.firstChild) {
     parent.firstChild.remove();
   }
+};
+
+const debounce =(cb, delayInterval) => {
+  let lastTimeout = null;
+  return function () {
+    const argums = arguments;
+    if (lastTimeout) {
+      clearTimeout(lastTimeout);
+    }
+    lastTimeout = setTimeout(() => {
+      cb.apply(null, argums);
+    },
+    delayInterval);
+  };
 };
 
 export {
@@ -29,5 +44,6 @@ export {
   compareMaxLengthText,
   addOverlay,
   removeOverlay,
-  removeChild
+  removeChild,
+  debounce
 };

@@ -6,7 +6,7 @@ const getData =(similarPhotos) => {
   const similarPhotoTemplate = document.querySelector('#picture').content;
   const similarListFragment = document.createDocumentFragment();
 
-  similarPhotos().forEach(({url, likes, comments}, id) => {
+  similarPhotos.forEach(({url, likes, comments}, id) => {
     const photoElement = similarPhotoTemplate.cloneNode(true);
     const pictureElement = photoElement.querySelector('.picture');
     pictureElement.querySelector('.picture__img').src = url;

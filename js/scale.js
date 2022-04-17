@@ -29,3 +29,12 @@ scaleControlBiggerElement.addEventListener ('click', () => {
 }
 );
 
+const setDefaultScale = ()  => {
+  scaleInputElement.value = `scale(${SCALE_MAX})`;
+  picturePreviewElement.style.transform = 'none';
+  scaleValue =100;
+};
+
+export {
+  setDefaultScale
+};

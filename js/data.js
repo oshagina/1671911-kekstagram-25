@@ -39,6 +39,9 @@ const START_COMMENTS_NUM = 0;
 const ESC_KEYCODE = 27;
 const ENTER_KEYCODE = 13;
 
+const CLOSE_MESSAGE = 'Please close it';
+const DELAY_INTERVAL = 500;
+
 const createDescriptionPhoto = () => ({
   id: getRandomPositiveInteger(1, 25),
   url: `photos/${getRandomPositiveInteger(1, 25)}.jpg`,
@@ -55,6 +58,24 @@ const createDescriptionPhoto = () => ({
 const similarDescriptionPhotos=()=>Array.from({length: SIMILAR_DESCRIPTION_COUNT}, createDescriptionPhoto);
 
 const hashTagRegExp = /[a-zA-Zа-яА-ЯёЁ0-9]/;
+
+const postInfo = {
+  TOTAL_POSTS: 25,
+  FILTERED_POSTS: 10,
+};
+
+const urlData = {
+  GET_URL: 'https://25.javascript.pages.academy/kekstagram/data',
+  POST_URL: 'https://25.javascript.pages.academy/kekstagram',
+};
+
+const FILE_TYPE = ['jpg', 'jpeg', 'gif', 'png'];
+
+const StatusResults = {
+  SUCCESS: 'success',
+  ERROR: 'error'
+};
+
 export {
   similarDescriptionPhotos,
   HashTagData,
@@ -63,5 +84,11 @@ export {
   START_COMMENTS_NUM,
   ESC_KEYCODE,
   ENTER_KEYCODE,
-  hashTagRegExp
+  hashTagRegExp,
+  postInfo,
+  urlData,
+  CLOSE_MESSAGE,
+  DELAY_INTERVAL,
+  FILE_TYPE,
+  StatusResults
 };

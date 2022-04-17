@@ -1,5 +1,7 @@
 import '../nouislider/nouislider.js';
 
+import {setDefaultScale} from './/scale.js';
+
 const picturePreviewElement = document.querySelector('.img-upload__preview');
 const imgUploadEffects = document.querySelector('.img-upload__effects');
 const imgUploadEffectsLevel = document.querySelector('.img-upload__effect-level');
@@ -144,6 +146,7 @@ const createSlider = (min, max, start, step) => {
 };
 
 imgUploadEffects.addEventListener('click', (evt) => {
+
   if(evt.target.closest('li').querySelector('input').value !== 'none' ){
     imgUploadEffectsLevel.classList.remove('hidden');
     sliderElement.noUiSlider.updateOptions(
@@ -157,6 +160,7 @@ imgUploadEffects.addEventListener('click', (evt) => {
     picturePreviewElement.classList.add('effects__preview--none');
     imgUploadEffectsLevel.classList.add('hidden');
   }
+  setDefaultScale();
 });
 
 
