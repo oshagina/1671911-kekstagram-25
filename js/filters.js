@@ -21,7 +21,6 @@ const setFilterButtonStyle = (element) => {
   element.classList.add('img-filters__button--active');
 };
 const getFilteredPosts = (galleryPosts) => {
-  getData(galleryPosts);
   uploadFiltersElement.classList.remove('img-filters--inactive');
 
   const onClickFilter = (evt) => {

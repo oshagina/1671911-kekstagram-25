@@ -15,7 +15,6 @@ import {getFilteredPosts} from './filters.js';
 
 const picturesContainerElement = document.querySelector('.pictures.container');
 const uploadContainerElement = document.querySelector('.img-upload__overlay');
-const uploadFormElement = document.querySelector('.img-upload__form');
 const errorMessageElement = document.querySelector('#error').content;
 const successMessageElement = document.querySelector('#success').content;
 
@@ -78,24 +77,21 @@ const getPhotoList = () => {
     });
 };
 
-const postData = () => {
+const postData = (formData) => {
   const onSuccess = () => closeElement(uploadContainerElement);
-  uploadFormElement.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    const formData = new FormData(evt.target);
-    fetch(
-      urlData.POST_URL,
-      {
-        method: 'POST',
-        body: formData,
-      },
-    ).then(checkStatus)
-      .then(() => {
-        onSuccess();
-        getSuccessMessage();
-      })
-      .catch((error) => getErrorMessage(error, CLOSE_MESSAGE));
-  });
+
+  fetch(
+    urlData.POST_URL,
+    {
+      method: 'POST',
+      body: formData,
+    },
+  ).then(checkStatus)
+    .then(() => {
+      onSuccess();
+      getSuccessMessage();
+    })
+    .catch((error) => getErrorMessage(error, CLOSE_MESSAGE));
 };
 
 export {

@@ -10,9 +10,6 @@ const sliderElement = document.querySelector('.effect-level__slider');
 
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 
-//const effectContainerElement = document.querySelector('.effect-level');
-//const effectLevelValueElement = document.querySelector('.effect-level__value');
-
 const cancelButtonElement = document.querySelector('.img-upload__cancel');
 
 const filterEffects = {
@@ -167,6 +164,12 @@ imgUploadEffects.addEventListener('click', (evt) => {
 cancelButtonElement.addEventListener('click', () =>{
   imgUploadOverlay.classList.add('hidden');
 } );
+
+document.addEventListener('keydown', (evt) => {
+  if(evt.key === 'Escape') {
+    imgUploadOverlay.classList.add('hidden');
+  }
+});
 
 export{
   createSlider
