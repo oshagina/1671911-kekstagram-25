@@ -1,6 +1,6 @@
 import {
   DELAY_INTERVAL,
-  postInfo
+  PostInfo
 } from './data.js';
 
 import {
@@ -30,7 +30,7 @@ const getFilteredPosts = (galleryPosts) => {
     if (evt.target.id === 'filter-default') {
       getData(galleryPosts);
     } else if (evt.target.id === 'filter-random') {
-      getData(galleryPosts.slice(0, postInfo.FILTERED_POSTS).sort(() => 0.5 - Math.random()));
+      getData(galleryPosts.slice(0, PostInfo.FILTERED_POSTS).sort(() => 0.5 - Math.random()));
     } else if (evt.target.id === 'filter-discussed') {
       const setCompareCommentsCount = (b, a) => a.comments.length - b.comments.length;
       getData(galleryPosts.slice().sort(setCompareCommentsCount));

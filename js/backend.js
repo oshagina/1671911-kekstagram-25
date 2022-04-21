@@ -17,6 +17,7 @@ const picturesContainerElement = document.querySelector('.pictures.container');
 const uploadContainerElement = document.querySelector('.img-upload__overlay');
 const errorMessageElement = document.querySelector('#error').content;
 const successMessageElement = document.querySelector('#success').content;
+const imgUploadForm = document.querySelector('.img-upload__form');
 
 const checkStatus = (response) => {
   if (response.ok) {
@@ -90,6 +91,7 @@ const postData = (formData) => {
     .then(() => {
       onSuccess();
       getSuccessMessage();
+      imgUploadForm.reset();
     })
     .catch((error) => getErrorMessage(error, CLOSE_MESSAGE));
 };

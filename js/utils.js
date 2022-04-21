@@ -1,6 +1,6 @@
 
 //Функция для проверки максимальной длины комментария
-const compareMaxLengthText = (text, COMMENT_SIZE) => text.trim().length <= COMMENT_SIZE;
+const compareMaxLengthText = (string, maxSize) => string.length <= maxSize;
 
 //функция получения случайного элемента из массива
 const getRandomPositiveInteger = (a, b) => {
@@ -24,13 +24,12 @@ const removeChild = (parent) => {
 
 const debounce =(cb, delayInterval) => {
   let lastTimeout = null;
-  return function () {
-    const argums = arguments;
+  return (...params) => {
     if (lastTimeout) {
       clearTimeout(lastTimeout);
     }
     lastTimeout = setTimeout(() => {
-      cb.apply(null, argums);
+      cb.apply(null, params);
     },
     delayInterval);
   };

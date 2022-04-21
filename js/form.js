@@ -1,102 +1,53 @@
-import {
-  ESC_KEYCODE} from './data.js';
+import { postData } from './backend.js';
+import { compareMaxLengthText } from './utils.js';
+import {hashTagRegExp, HASHTAGS_AMOUNT, COMMENT_SIZE } from './data.js';
 
-import {
-  closeElement,
-  compareMaxLengthText,
-} from './utils.js';
 
-import {
-  COMMENT_SIZE,
-  HashTagData,
-  hashTagRegExp
-} from './data.js';
+const uploadForm = document.querySelector('.img-upload__form');
+const textHashtags = document.querySelector('.text__hashtags');
+const textComments = document.querySelector('.text__description');
 
-const uploadFormElement = document.querySelector('.img-upload__form');
-const uploadContainerElement = document.querySelector('.img-upload__overlay');
-export const inputHasTagElement = document.querySelector('.text__hashtags');
-export const commentsElement = document.querySelector('.text__description');
+const pristine = new Pristine(uploadForm, {
+  classTo: 'img-upload__text-valid',
+  errorTextParent: 'img-upload__text-valid',
+});
 
-export const onEscPreventClosing = (evt) => {
-  if (evt.keyCode === ESC_KEYCODE) {
-    evt.stopPropagation();
+let hashtags = [];
+
+const duplicatHashtag = (value) => {
+  const hashtagsLine = String(value.toLowerCase());
+  hashtags = hashtagsLine.split(' ');
+  return hashtags.length === new Set(hashtags).size;
+};
+
+pristine.addValidator(textHashtags, (value) => hashTagRegExp.test(value), 'Хэш-тег должен начинаться с #, не содержать спецсимволов и пробелы, максимальная длина хэш-тега 20 символов', 2, false);
+
+pristine.addValidator(textHashtags, duplicatHashtag, 'Один и тот же хэш-тег не может быть использован дважды');
+
+pristine.addValidator(textHashtags, () => compareMaxLengthText(hashtags, HASHTAGS_AMOUNT), 'Допускается не более 5 хэш-тегов');
+
+pristine.addValidator(textComments, (value) => compareMaxLengthText(value, COMMENT_SIZE), 'Комментарий не должен превышать 140 символов');
+
+const submitButton = document.querySelector('#upload-submit');
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Публикую...';
+};
+
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
+
+uploadForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  if (pristine.validate()) {
+    blockSubmitButton();
+    const formData = new FormData(evt.target);
+    postData(formData);
+    unblockSubmitButton();
   }
-};
-
-const isValidHashTagForm = () => {
-  const formCheking = [
-    {
-      errorInfo: 'Начните хэш-тэг с #',
-      check: (inputHashTag) => inputHashTag.some((value) => value[0] !== HashTagData.OCTOTHORPE),
-    },
-    {
-      errorInfo: `Минимальная длина лина хэш-тега ${HashTagData.MIN_HASHTAG_SIZE} символа`,
-      check: (inputHashTag) => inputHashTag.some((value) => value.length <= HashTagData.MIN_HASHTAG_SIZE),
-    },
-    {
-      errorInfo: `Максимальная длина хэш-тега ${HashTagData.MAX_HASHTAG_SIZE} символов`,
-      check: (inputHashTag) => inputHashTag.some((value) => value.length <= HashTagData.MIN_HASHTAG_SIZE),
-    },
-    {
-      errorInfo: 'После решётки должны быть только буквы и числа',
-      check: (inputHashTag) => inputHashTag.some((value) => value[value.length - 1].match(hashTagRegExp) === null),
-    },
-    {
-      errorInfo: false,
-      check: (inputHashTag) => inputHashTag,
-    },
-    {
-      check: (inputHashTag) => inputHashTag.some((value, index, arr) => arr.indexOff(value) !== index),
-      errorInfo: 'Не используйте один и тот же хэш-тег',
-    },
-    {
-      check: (inputHashTag) => inputHashTag.length > HashTagData.HASHTAGS_AMOUNT,
-      errorInfo: `Максимальное кол-во хэш-тегов ${HashTagData.HASHTAGS_AMOUNT}`,
-    },
-  ];
-
-  const getCheck = (inputHashTag) => formCheking.find(({ check }) => check(inputHashTag));
-  const getHashTagsArray = () => inputHasTagElement.value.split('').map(((value) => value.toLowerCase()));
-
-  const onInputHashTagChecking = () => {
-    const hashTags = getHashTagsArray();
-    const { errorInfo } = getCheck(hashTags);
-    if (errorInfo) {
-      inputHasTagElement.setCustomValidity(errorInfo);
-    } else {
-      inputHasTagElement.setCustomValidity('');
-    }
-    inputHasTagElement.reportValidity();
-  };
-
-  const onInputComment = () => {
-    if (!compareMaxLengthText(commentsElement.value, COMMENT_SIZE)) {
-      commentsElement.setCustomValidity(`Максимальная длина текста ${COMMENT_SIZE} символов`);
-    } else {
-      commentsElement.setCustomValidity('');
-    }
-    commentsElement.reportValidity();
-  };
-
-  const onEscHashTagArea = (evt) => onEscPreventClosing(evt);
-  const onEscCommentArea = (evt) => onEscPreventClosing(evt);
-
-  inputHasTagElement.addEventListener('input', onInputHashTagChecking);
-  commentsElement.addEventListener('input', onInputComment);
-  inputHasTagElement.addEventListener('keydown', onEscHashTagArea);
-  commentsElement.addEventListener('keydown', onEscCommentArea);
-};
-
-const formClosing = () => {
-  const onSubmitClosing = (evt) => {
-    evt.preventDefault();
-    closeElement(uploadContainerElement);
-    uploadFormElement.reset();
-  };
-  uploadFormElement.addEventListener('submit', onSubmitClosing);
-};
-
-export {
-  isValidHashTagForm,
-  formClosing
-};
+});

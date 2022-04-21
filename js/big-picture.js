@@ -13,24 +13,24 @@ import {
 const picturesContainerElement = document.querySelector('.pictures.container');
 const bigPicturesOverlayElement = document.querySelector('.big-picture.overlay');
 const bigPicturePreviewElement = document.querySelector('.big-picture__preview');
-const bigPictureImgElement = bigPicturePreviewElement.querySelector('.big-picture__img');
+const bigPictureImgElement = bigPicturePreviewElement.querySelector('.big-picture__img img');
 const closeButtonBigPictureElement = bigPicturePreviewElement.querySelector('.big-picture__cancel');
 const bigPictureCommentsList = bigPicturePreviewElement.querySelector('.social__comments');
-const bigPictureCommentElement = bigPicturePreviewElement.querySelector('social__comment');
+const bigPictureCommentElement = bigPicturePreviewElement.querySelector('.social__comment');
 const socialCommentCounterElement = bigPicturePreviewElement.querySelector('.social__comment-count');
 const socialCommentsLoaderElement = bigPicturePreviewElement.querySelector('.social__comments-loader');
 const bigPictureLikesContainerElement = bigPicturePreviewElement.querySelector('.likes-count');
 const bigPictureCountContainerElement = bigPicturePreviewElement.querySelector('.comments-count');
 const bigPictureCaptonContainerElement = bigPicturePreviewElement.querySelector('.social__caption');
+const socialFooterText = bigPicturePreviewElement.querySelector('.social__footer-text');
 
-
-const pictureCommonData = (bigPictureData) => {
+const getPictureCommonData = (bigPictureData) => {
   const listCommentsFragment = document.createDocumentFragment();
   bigPictureData.forEach((comment) =>{
     const oneCommentElement = bigPictureCommentElement.cloneNode(true);
     oneCommentElement.querySelector('.social__text').textContent = comment.message;
     const userName = `${comment.name  }: `;
-    oneCommentElement.querySelector('.social__text').insertAdjacentText('afterbebin', userName);
+    oneCommentElement.querySelector('.social__text').insertAdjacentText('afterbegin', userName);
     oneCommentElement.querySelector('.social__picture').src = comment.avatar;
     bigPictureCommentsList.appendChild(oneCommentElement);
   });
@@ -53,11 +53,11 @@ const getCommentsList = (bigPictureData) => {
       showElement(socialCommentCounterElement);
     }
 
-    const commentsBlock = bigPictureData.comments.splice();
-    pictureCommonData(commentsBlock.splice(START_COMMENTS_NUM, STEP_ADD_COMMENT));
+    const commentsBlock = bigPictureData.comments.slice();
+    getPictureCommonData(commentsBlock.splice(START_COMMENTS_NUM, STEP_ADD_COMMENT));
 
     const onClickCommentsOpening = () => {
-      pictureCommonData(commentsBlock.splice(START_COMMENTS_NUM, STEP_ADD_COMMENT));
+      getPictureCommonData(commentsBlock.splice(START_COMMENTS_NUM, STEP_ADD_COMMENT));
     };
     socialCommentsLoaderElement.addEventListener('click', onClickCommentsOpening);
   } else {
@@ -67,25 +67,19 @@ const getCommentsList = (bigPictureData) => {
     if(!socialCommentCounterElement.classList.contains('hidden')){
       closeElement(socialCommentCounterElement);
     }
-    pictureCommonData(bigPictureData.comments);
+    getPictureCommonData(bigPictureData.comments);
   }
 };
 
 const getBigPhoto = (loadedPhotos) => {
-  const showPhotos = (evt) => {
-    evt.preventDefault();
-    const bigPictureData = (id) => loadedPhotos.find((picture) => String(picture.id) === id);
-    getPost(bigPictureData(evt.target.dataset.id));
+  const showPhotos = () => {
+    getPost(loadedPhotos);
     removeChild(bigPictureCommentsList);
     showElement(bigPicturePreviewElement);
-    getCommentsList(bigPictureData(evt.target.dataset.id));
+    getCommentsList(loadedPhotos);
   };
 
-  const onClickPictureOpen = (evt) => {
-    if (evt.target.closest('.picture__img')) {
-      showPhotos(evt);
-    }
-  };
+  showPhotos();
 
   const onKeydownPictureOpen = (evt) => {
     if (evt.keyCode === ENTER_KEYCODE && evt.target.classList.contains('picture')) {
@@ -94,7 +88,7 @@ const getBigPhoto = (loadedPhotos) => {
   };
 
   const onEscPictureClose = (evt) => {
-    if (evt.keyCode === ESC_KEYCODE) {
+    if (evt.keyCode === ESC_KEYCODE && document.activeElement !== socialFooterText) {
       evt.preventDefault();
       closeElement(bigPicturesOverlayElement);
     }
@@ -107,7 +101,6 @@ const getBigPhoto = (loadedPhotos) => {
   showElement(bigPicturesOverlayElement);
   showElement(bigPicturePreviewElement);
 
-  picturesContainerElement.addEventListener('click', onClickPictureOpen, true);
   picturesContainerElement.addEventListener('keydown', onKeydownPictureOpen);
   closeButtonBigPictureElement.addEventListener('click', onClickPictureClose);
   document.addEventListener('keydown', onEscPictureClose);

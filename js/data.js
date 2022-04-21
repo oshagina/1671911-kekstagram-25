@@ -27,12 +27,8 @@ const DESCRIPTIONS=[
   'С друзьями',
   'Тихая природа',
 ];
-const HashTagData = {
-  OCTOTHORPE: '#',
-  MIN_HASHTAG_SIZE: 2,
-  MAX_HASHTAG_SIZE: 20,
-  HASHTAGS_AMOUNT: 5,
-};
+
+const HASHTAGS_AMOUNT = 5;
 const COMMENT_SIZE = 140;
 const STEP_ADD_COMMENT = 5;
 const START_COMMENTS_NUM = 0;
@@ -57,9 +53,9 @@ const createDescriptionPhoto = () => ({
 //функция для создания массива из 25 сгенерированных объектов. Каждый объект массива — описание фотографии, опубликованной пользователем.
 const similarDescriptionPhotos=()=>Array.from({length: SIMILAR_DESCRIPTION_COUNT}, createDescriptionPhoto);
 
-const hashTagRegExp = /[a-zA-Zа-яА-ЯёЁ0-9]/;
+const hashTagRegExp = /^(#[A-za-zА-Яа-яЁё0-9_]{2,19}\s?)*$/;
 
-const postInfo = {
+const PostInfo = {
   TOTAL_POSTS: 25,
   FILTERED_POSTS: 10,
 };
@@ -78,14 +74,14 @@ const StatusResults = {
 
 export {
   similarDescriptionPhotos,
-  HashTagData,
+  HASHTAGS_AMOUNT,
   COMMENT_SIZE,
   STEP_ADD_COMMENT,
   START_COMMENTS_NUM,
   ESC_KEYCODE,
   ENTER_KEYCODE,
   hashTagRegExp,
-  postInfo,
+  PostInfo,
   urlData,
   CLOSE_MESSAGE,
   DELAY_INTERVAL,
