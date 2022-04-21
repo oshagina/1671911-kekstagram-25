@@ -1,15 +1,14 @@
 import { postData } from './backend.js';
 import { compareMaxLengthText } from './utils.js';
-import {hashTagRegExp, HASHTAGS_AMOUNT, COMMENT_SIZE } from './data.js';
-
+import { hashTagRegExp, HASHTAGS_AMOUNT, COMMENT_SIZE } from './data.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const textHashtags = document.querySelector('.text__hashtags');
 const textComments = document.querySelector('.text__description');
 
 const pristine = new Pristine(uploadForm, {
-  classTo: 'img-upload__text-valid',
-  errorTextParent: 'img-upload__text-valid',
+  classTo: 'img-upload__text',
+  errorTextParent: 'img-upload__text',
 });
 
 let hashtags = [];

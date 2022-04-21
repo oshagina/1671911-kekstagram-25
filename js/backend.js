@@ -2,22 +2,25 @@ import {
   ESC_KEYCODE,
   CLOSE_MESSAGE,
   StatusResults,
-  urlData
+  UrlData
 } from './data.js';
 
 import {
   closeElement
 } from './utils.js';
 
-import{getData} from './small-picture.js';
+import { getData } from './small-picture.js';
 
-import {getFilteredPosts} from './filters.js';
+import { getFilteredPosts } from './filters.js';
+import { destroySlider } from './effects.js';
 
 const picturesContainerElement = document.querySelector('.pictures.container');
 const uploadContainerElement = document.querySelector('.img-upload__overlay');
-const errorMessageElement = document.querySelector('#error').content;
-const successMessageElement = document.querySelector('#success').content;
+const errorMessageElement = document.querySelector('#error').content.querySelector('.error');
+const successMessageElement = document.querySelector('#success').content.querySelector('.success');
 const imgUploadForm = document.querySelector('.img-upload__form');
+let successClone;
+let errorClone;
 
 const checkStatus = (response) => {
   if (response.ok) {
@@ -41,48 +44,55 @@ const removeMessageBlock = (status) => {
   const onClickNonCloser = (evt) => evt.stopPropagation();
   picturesContainerElement.querySelector(`.${currentStatus}`).addEventListener('click', onClickCloser);
   picturesContainerElement.querySelector(`.${currentStatus}__inner`).addEventListener('click', onClickNonCloser);
-  picturesContainerElement.querySelector(`.${currentStatus}__button`).addEventListener('click', onClickCloser);
+  if (status === 'success') {
+    successClone.querySelector(`.${currentStatus}__button`).addEventListener('click', onClickCloser);
+  } else {
+    errorClone.querySelector(`.${currentStatus}__button`).addEventListener('click', onClickCloser);
+  }
   window.addEventListener('keydown', onEscCloser);
 };
 
 const getSuccessMessage = () => {
   const successMessageFragment = document.createDocumentFragment();
-  const element = successMessageElement.cloneNode(true);
-  picturesContainerElement.appendChild(element);
+  successClone = successMessageElement.cloneNode(true);
+  picturesContainerElement.appendChild(successClone);
   picturesContainerElement.appendChild(successMessageFragment);
   removeMessageBlock(StatusResults.SUCCESS);
 };
 
 const getErrorMessage = (error, message) => {
   const errorMessageFragment = document.createDocumentFragment();
-  const element = errorMessageElement.cloneNode(true);
-  element.querySelector('.error__title').textContent = error;
+  errorClone = errorMessageElement.cloneNode(true);
+  errorClone.querySelector('.error__title').textContent = error;
   if (message) {
-    element.querySelector('.error__button').textContent = message;
+    errorClone.querySelector('.error__button').textContent = message;
   }
-  errorMessageFragment.appendChild(element);
+  errorMessageFragment.appendChild(errorClone);
   picturesContainerElement.appendChild(errorMessageFragment);
   removeMessageBlock(StatusResults.ERROR);
 };
 
 const getPhotoList = () => {
-  fetch(urlData.GET_URL)
+  fetch(UrlData.GET_URL)
     .then((response) => response.json())
     .then((data) => {
       getData(data);
       document.querySelector('.img-filters').classList.remove('img-filters--inactive');
       getFilteredPosts(data);
     })
-    .catch((error) => {
-      getErrorMessage(error, CLOSE_MESSAGE);
+    .catch(() => {
+      getErrorMessage('Ошибка получения данных', CLOSE_MESSAGE);
     });
 };
 
 const postData = (formData) => {
-  const onSuccess = () => closeElement(uploadContainerElement);
+  const onSuccess = () => {
+    closeElement(uploadContainerElement);
+    destroySlider();
+  };
 
   fetch(
-    urlData.POST_URL,
+    UrlData.POST_URL,
     {
       method: 'POST',
       body: formData,
@@ -93,7 +103,7 @@ const postData = (formData) => {
       getSuccessMessage();
       imgUploadForm.reset();
     })
-    .catch((error) => getErrorMessage(error, CLOSE_MESSAGE));
+    .catch(() => getErrorMessage('Ошибка  загрузки изображения', CLOSE_MESSAGE));
 };
 
 export {

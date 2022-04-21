@@ -157,18 +157,24 @@ imgUploadEffects.addEventListener('click', (evt) => {
   }
 });
 
+const destroySlider = () => {
+  sliderElement.noUiSlider.destroy();
+};
 
 cancelButtonElement.addEventListener('click', () =>{
   imgUploadOverlay.classList.add('hidden');
+  destroySlider();
 } );
 
 document.addEventListener('keydown', (evt) => {
   if(evt.key === 'Escape') {
     imgUploadOverlay.classList.add('hidden');
+    destroySlider();
   }
 });
 
 export{
-  createSlider
+  createSlider,
+  destroySlider,
 };
 
